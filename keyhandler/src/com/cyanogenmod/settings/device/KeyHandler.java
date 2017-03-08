@@ -26,9 +26,9 @@ import android.view.KeyEvent;
 
 import com.android.internal.os.DeviceKeyHandler;
 
-import org.cyanogenmod.internal.util.FileUtils;
+import org.mokee.internal.util.FileUtils;
 
-import cyanogenmod.hardware.CMHardwareManager;
+import mokee.hardware.MKHardwareManager;
 
 public class KeyHandler implements DeviceKeyHandler {
 
@@ -62,8 +62,8 @@ public class KeyHandler implements DeviceKeyHandler {
     }
 
     public boolean handleKeyEvent(KeyEvent event) {
-        CMHardwareManager hardware = CMHardwareManager.getInstance(mContext);
-        boolean virtualKeysEnabled = hardware.get(CMHardwareManager.FEATURE_KEY_DISABLE);
+        MKHardwareManager hardware = MKHardwareManager.getInstance(mContext);
+        boolean virtualKeysEnabled = hardware.get(MKHardwareManager.FEATURE_KEY_DISABLE);
         boolean fingerprintHomeButtonEnabled = FileUtils.readOneLine(FP_HOME_NODE).equals("1");
 
         if (!hasSetupCompleted()) {

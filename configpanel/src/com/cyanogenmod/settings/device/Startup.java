@@ -22,11 +22,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
-
-import java.io.File;
-
-import com.cyanogenmod.settings.device.utils.Constants;
 
 import org.mokee.internal.util.FileUtils;
 
@@ -35,41 +33,46 @@ public class Startup extends BroadcastReceiver {
     private static final String TAG = Startup.class.getSimpleName();
 
     @Override
-    public void onReceive(final Context context, final Intent intent) {
+    public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
         if (mokee.content.Intent.ACTION_INITIALIZE_MK_HARDWARE.equals(action)) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             // Disable button settings if needed
             if (!hasButtonProcs()) {
-                disableComponent(context, ButtonSettings.class.getName());
+                disableComponent(context, ButtonSettingsActivity.class.getName());
             } else {
-                enableComponent(context, ButtonSettings.class.getName());
+                enableComponent(context, ButtonSettingsActivity.class.getName());
 
                 // Restore nodes to saved preference values
                 for (String pref : Constants.sButtonPrefKeys) {
-                    String value;
-                    String node;
+                    String node, value;
                     if (Constants.sStringNodePreferenceMap.containsKey(pref)) {
-                        value = Constants.getPreferenceString(context, pref);
                         node = Constants.sStringNodePreferenceMap.get(pref);
+                        value = Utils.getPreferenceString(context, pref);
                     } else {
-                        value = Constants.isPreferenceEnabled(context, pref) ?
-                                "1" : "0";
                         node = Constants.sBooleanNodePreferenceMap.get(pref);
+                        value = Utils.isPreferenceEnabled(context, pref) ? "1" : "0";
                     }
                     if (!FileUtils.writeLine(node, value)) {
                         Log.w(TAG, "Write to node " + node +
                             " failed while restoring saved preference values");
                     }
                 }
+
+                // Send initial broadcasts
+                final boolean shouldEnablePocketMode =
+                        prefs.getBoolean(Constants.FP_WAKEUP_KEY, false) &&
+                        prefs.getBoolean(Constants.FP_POCKETMODE_KEY, false);
+                Utils.broadcastCustIntent(context, shouldEnablePocketMode);
             }
         }
     }
 
     static boolean hasButtonProcs() {
-        return new File(Constants.BUTTON_SWAP_NODE).exists() ||
-                new File(Constants.FP_HOME_KEY_NODE).exists() ||
-                new File(Constants.FP_WAKEUP_NODE).exists();
+        return (FileUtils.fileExists(Constants.BUTTON_SWAP_NODE) ||
+                FileUtils.fileExists(Constants.FP_HOME_KEY_NODE) ||
+                FileUtils.fileExists(Constants.FP_WAKEUP_NODE));
     }
 
     private void disableComponent(Context context, String component) {

@@ -34,7 +34,7 @@ fi
 . "$HELPER"
 
 # Initialize the helper for common
-setup_vendor "$DEVICE_COMMON" "$VENDOR" "$CM_ROOT" true
+setup_vendor "$DEVICE_COMMON" "$VENDOR" "$MK_ROOT" true
 
 # Copyright headers and guards
 write_headers "capricorn gemini lithium natrium scorpio"

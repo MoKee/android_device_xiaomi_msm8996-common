@@ -135,7 +135,6 @@ PRODUCT_PACKAGES += \
     camera.device@3.2-impl \
     camera.msm8996 \
     libmm-qcamera \
-    Snap \
     vendor.qti.hardware.camera.device@1.0 \
     vendor.qti.hardware.camera.device@1.0_vendor
 
@@ -343,7 +342,8 @@ PRODUCT_COPY_FILES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    android.hardware.sensors@1.0-impl
+    android.hardware.sensors@1.0-impl \
+    android.hardware.sensors@1.0-service
 
 # Telephony
 PRODUCT_PACKAGES += \

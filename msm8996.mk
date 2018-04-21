@@ -257,7 +257,11 @@ PRODUCT_PACKAGES += \
 
 # LiveDisplay native
 PRODUCT_PACKAGES += \
-    libjni_livedisplay
+    vendor.mokee.livedisplay@1.0-service-sdm \
+    vendor.mokee.livedisplay-V1.0-java
+
+PRODUCT_BOOT_JARS += \
+    vendor.mokee.livedisplay-V1.0-java
 
 # Media
 PRODUCT_COPY_FILES += \

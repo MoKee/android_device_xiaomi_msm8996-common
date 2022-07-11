@@ -25,7 +25,7 @@ using ::android::base::Trim;
 using ::android::base::WriteStringToFile;
 
 namespace vendor {
-namespace lineage {
+namespace mokee {
 namespace touch {
 namespace V1_0 {
 namespace implementation {
@@ -49,7 +49,7 @@ bool KeySwapper::isSupported() {
     return has_key_swapper_;
 }
 
-// Methods from ::vendor::lineage::touch::V1_0::IKeySwapper follow.
+// Methods from ::vendor::mokee::touch::V1_0::IKeySwapper follow.
 Return<bool> KeySwapper::isEnabled() {
     std::string buf;
 
@@ -77,5 +77,5 @@ Return<bool> KeySwapper::setEnabled(bool enabled) {
 }  // namespace implementation
 }  // namespace V1_0
 }  // namespace touch
-}  // namespace lineage
+}  // namespace mokee
 }  // namespace vendor
